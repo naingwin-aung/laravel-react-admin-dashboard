@@ -21,7 +21,7 @@ body {
 }
 
 input {
-    outline: 0;
+    outline: none;
     background: #ffffff;
     width: 100%;
     border: 2px solid #e6e6e6;
