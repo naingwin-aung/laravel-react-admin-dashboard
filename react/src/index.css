@@ -241,3 +241,11 @@ table > tbody > tr > td {
         transform: translateY(0);
     }
 }
+
+.mt-3 {
+    margin-top: 30px;
+}
+
+.me-3 {
+    margin-right: 10px;
+}
