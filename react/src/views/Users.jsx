@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { Link } from "react-router-dom";
 import DefaultContent from "../components/DefaultContent";
+import { useStateContext } from "../contexts/ContextProvider";
 
 function Users() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { setNotification } = useStateContext();
 
     useEffect(() => {
         getUsers();
@@ -25,33 +27,40 @@ function Users() {
 
         axiosClient.delete(`/users/${u.id}`).then(() => {
             // todo show notification
+            setNotification("User was successfully deleted");
             getUsers();
         });
     };
 
-    let content = <DefaultContent>Not Found Users</DefaultContent>;
+    let content;
 
-    if (users.length > 0) {
-        content = users.map((user) => (
-            <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.created_at}</td>
-                <td>
-                    <Link to={`/users/${user.id}`} className="btn-edit me-3">
-                        Edit
-                    </Link>
-                    <button
-                        onClick={(ev) => onDelete(user)}
-                        className="btn-delete"
-                    >
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        ));
-    }
+    content =
+        users.length > 0 ? (
+            users.map((user) => (
+                <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.created_at}</td>
+                    <td>
+                        <Link
+                            to={`/users/${user.id}`}
+                            className="btn-edit me-3"
+                        >
+                            Edit
+                        </Link>
+                        <button
+                            onClick={(ev) => onDelete(user)}
+                            className="btn-delete"
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            ))
+        ) : (
+            <DefaultContent>Not Found Users</DefaultContent>
+        );
 
     if (isLoading) {
         content = <DefaultContent>Loading.........</DefaultContent>;
